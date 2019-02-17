@@ -12,14 +12,14 @@
 
 - [ ] Usage documentation
 
-- [ ] GitHub Pages implementation
+- [x] Permissive license
 
 - [x] Inclusive code of conduct
-
-- [ ] Permissive license
 
 - [ ] Issue submission templates
 
 - [ ] Contribution guidelines
+
+- [ ] GitHub Pages implementation
 
 - [ ] CI integrations
