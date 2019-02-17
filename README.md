@@ -14,7 +14,7 @@
 
 - [ ] GitHub Pages implementation
 
-- [ ] Inclusive code of conduct
+- [x] Inclusive code of conduct
 
 - [ ] Permissive license
 
