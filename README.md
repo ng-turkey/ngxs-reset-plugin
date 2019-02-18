@@ -29,6 +29,109 @@ How the concept of meta reducers related to all this is:
 - every issue above can be solved using them. However, that literally means writing your own plugin.
 - this plugin IS basically a meta reducer, but a robust and carefully tested one.
 
+## Installation
+
+Run the following code in your terminal:
+
+```
+yarn add ngxs-reset-plugin
+```
+
+or if you are using npm:
+
+```
+npm install ngxs-reset-plugin
+```
+
+## Usage
+
+### Setup Before Initial Use
+
+Import `NgxsResetPluginModule` into your root module like:
+
+```TS
+import { NgxsModule } from '@ngxs/store';
+import { NgxsResetPluginModule } from '@ngxs/reset-plugin';
+
+@NgModule({
+  imports: [
+    NgxsModule.forRoot([ /* Your states here */ ]),
+    NgxsResetPluginModule.forRoot()
+  ]
+})
+export class AppModule {}
+```
+
+### How to Clear States
+
+To clear all states (on logout for example):
+
+```TS
+this.store.dispatch(
+  new StateClear()
+);
+```
+
+To clear all states but one: \*
+
+```TS
+this.store.dispatch(
+  new StateClear(SomeState)
+);
+```
+
+To clear all states but some: \*
+
+```TS
+this.store.dispatch(
+  new StateClear(SomeState, SomeOtherState)
+);
+```
+
+\* Keeping states while deleting others is useful especially combined with [`@ngxs/storage-plugin`](https://npmjs.com/package/@ngxs/storage-plugin)
+
+### How to Reset States to Defaults
+
+To reset a single state to its defaults on certain events (such as route change):
+
+```TS
+this.store.dispatch(
+  new StateReset(SomeState)
+);
+```
+
+To reset multiple states to their defaults (may prove useful in distributed scenarios):
+
+```TS
+this.store.dispatch(
+  new StateReset(SomeState, SomeOtherState)
+);
+```
+
+### How to Overwrite States
+
+To replace the value of a single state with a new one: \*
+
+```TS
+// type OverwriteTuple = [StateClass, any];
+
+this.store.dispatch(
+  new StateOverwrite([SomeState, newStateValue])
+);
+```
+
+To replace the value of multiple states with new ones: \*
+
+```TS
+// type OverwriteTuple = [StateClass, any];
+
+this.store.dispatch(
+  new StateOverwrite([SomeState, newStateValue], [SomeOtherState, newOtherStateValue])
+);
+```
+
+\* Overwriting states with improper values can break your application. Proceed with caution.
+
 ## Roadmap
 
 - [ ] Clear NGXS state(s) on dispatch of StateClear action
@@ -39,7 +142,7 @@ How the concept of meta reducers related to all this is:
 
 - [ ] Test coverage
 
-- [ ] Documentation & examples
+- [x] Documentation & examples
 
 - [x] Permissive license
 
