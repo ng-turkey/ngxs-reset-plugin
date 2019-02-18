@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "launch": "cp README.md dist/ngxs-reset-plugin/README.md && cd dist/ngxs-reset-plugin && npm publish && cd ../..",
+    "release": "cp README.md dist/ngxs-reset-plugin/README.md && cd dist/ngxs-reset-plugin && npm publish && cd ../..",
     "verdaccio": "cd dist/ngxs-reset-plugin && npm publish --registry http://localhost:4873 && cd ../..",
     "unverdaccio": "cd dist/ngxs-reset-plugin && npm unpublish --registry http://localhost:4873 --force && cd ../.."
   },
