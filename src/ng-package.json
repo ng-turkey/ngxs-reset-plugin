@@ -1,0 +1,7 @@
+{
+  "$schema": "../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../dist/ngxs-reset-plugin",
+  "lib": {
+    "entryFile": "public_api.ts"
+  }
+}

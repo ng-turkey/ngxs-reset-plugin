@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngxs-reset-plugin": [
+        "dist/ngxs-reset-plugin"
+      ],
+      "ngxs-reset-plugin/*": [
+        "dist/ngxs-reset-plugin/*"
+      ]
+    }
   }
 }
