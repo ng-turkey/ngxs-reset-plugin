@@ -1,13 +1,15 @@
 {
   "name": "ngxs-reset-plugin",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "verdaccio": "cd dist/ngxs-reset-plugin && npm publish --registry http://localhost:4873 && cd ../..",
+    "unverdaccio": "cd dist/ngxs-reset-plugin && npm unpublish --registry http://localhost:4873 --force && cd ../.."
   },
   "private": true,
   "dependencies": {
