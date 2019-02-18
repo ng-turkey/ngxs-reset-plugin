@@ -134,13 +134,13 @@ this.store.dispatch(
 
 ## Roadmap
 
-- [ ] Clear NGXS state(s) on dispatch of StateClear action
+- [x] Clear NGXS state(s) on dispatch of StateClear action
 
-- [ ] Reset NGXS state(s) to defaults on dispatch of StateReset action
+- [x] Reset NGXS state(s) to defaults on dispatch of StateReset action
 
-- [ ] Overwrite NGXS state(s) on dispatch of StateOverwrite action
+- [x] Overwrite NGXS state(s) on dispatch of StateOverwrite action
 
-- [ ] Test coverage
+- [x] Test coverage
 
 - [x] Documentation & examples
 
