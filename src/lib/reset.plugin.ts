@@ -43,7 +43,11 @@ export class NgxsResetPlugin implements NgxsPlugin {
 
   private resetStates(state: any, statesToReset: MetaDataModel[]): any {
     statesToReset.forEach(meta => {
-      state = setValue(state, getPath(meta), meta.defaults);
+      state = setValue(
+        state,
+        getPath(meta),
+        typeof meta.defaults === 'undefined' ? {} : meta.defaults,
+      );
 
       if (meta.children) {
         state = this.resetStates(state, meta.children.map(

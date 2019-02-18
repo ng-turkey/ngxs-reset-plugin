@@ -78,7 +78,7 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateReset(SessionState, ToDoState));
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toBeUndefined();
+    expect(store.selectSnapshot(SessionState)).toEqual({});
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
