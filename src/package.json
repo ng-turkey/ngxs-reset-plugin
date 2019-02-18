@@ -1,8 +1,31 @@
 {
   "name": "ngxs-reset-plugin",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ng-turkey/ngxs-reset-plugin.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ng-turkey/ngxs-reset-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/ng-turkey/ngxs-reset-plugin/issues"
+  },
+  "description": "Reset plugin for NGXS: Effortlessly clears, resets, or overwrites NGXS states respecting the state tree.",
+  "keywords": [
+    "ngxs",
+    "plugin",
+    "reset plugin",
+    "clear plugin",
+    "reset state",
+    "clear state",
+    "overwrite state",
+    "erase state",
+    "replace state",
+    "state defaults"
+  ],
   "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0"
+    "@angular/core": ">=5.0.0 <8.0.0",
+    "@ngxs/store": ">=0.0.0 <4.0.0",
+    "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4"
   }
 }
