@@ -1,6 +1,6 @@
 # NGXS Reset Plugin
 
-This plugin is designed to clear, reset, and overwrite NGXS states on dispatch of predefined actions. If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons(#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
+This plugin is designed to clear, reset, and overwrite [NGXS](https://www.npmjs.com/package/@ngxs/store) states on dispatch of predefined actions. If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons](#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
 
 ## Reasons to Use This Plugin
 
@@ -13,7 +13,7 @@ Drawbacks/missing features of the reset method of NGXS Store are:
 
 - the developer needs to select states or state snapshots and build a new state tree up of them. This is both difficult and painful multi-level states are in place. It becomes even more difficult when multiple state slices are required to be kept. Imagine shared parent states and merging several state slices based on path meta data.
 - there is no method proposed to reset a state to its already defined defaults. That is an even more crucial requirement due to the simple fact that it is more frequently needed and replacing a state with anything other than defaults can potentially break your app.
-- the execution is untrackable. Tracking it with [Redux DevTools plugin](https://npmjs.com/package/@ngxs/devtools-plugin) or the [Logger plugin](https://npmjs.com/package/@ngxs/logger-plugin) or acting upon it declaratively (such as a handler) is impossible.
+- the execution is untrackable. Tracking it with [Redux DevTools plugin](https://www.npmjs.com/package/@ngxs/devtools-plugin) or the [Logger plugin](https://www.npmjs.com/package/@ngxs/logger-plugin) or acting upon it declaratively (such as a handler) is impossible.
 - it "can cause unintended side effects if improperly used and should be used with caution!" (quoted from NGXS official documentation)
 
 Reset plugin improves all these because it:
