@@ -1,5 +1,3 @@
-/*
- * Public API Surface of ngxs-reset-plugin
- */
-
-export * from './lib/reset-plugin.module';
+export { NgxsResetPluginModule } from './lib/reset.module';
+export { NgxsResetPlugin } from './lib/reset.plugin';
+export * from './lib/symbols';
