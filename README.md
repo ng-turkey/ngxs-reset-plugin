@@ -164,4 +164,4 @@ this.store.dispatch(
 
 - [ ] GitHub Pages implementation
 
-- [ ] CI integrations
+- [x] CI integrations
