@@ -159,7 +159,7 @@ this.store.dispatch(
 
 - [x] Issue submission templates
 
-- [ ] Contribution guidelines
+- [x] Contribution guidelines
 
 - [ ] GitHub Pages implementation
 
