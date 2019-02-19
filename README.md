@@ -158,7 +158,7 @@ this.store.dispatch(
 
 - [x] Inclusive code of conduct
 
-- [ ] Issue submission templates
+- [x] Issue submission templates
 
 - [ ] Contribution guidelines
 
