@@ -60,7 +60,7 @@ Import `NgxsResetPluginModule` into your root module like:
 
 ```TS
 import { NgxsModule } from '@ngxs/store';
-import { NgxsResetPluginModule } from '@ngxs/reset-plugin';
+import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
 
 @NgModule({
   imports: [
