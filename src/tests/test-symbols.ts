@@ -43,6 +43,13 @@ export namespace ToDo {
 }
 
 /**
+ * Test action to toggle darkmode
+ */
+export class PreferencesToggleDark {
+  static readonly type = '[Preferences] Toggle darkmode';
+}
+
+/**
  * Test action to add a lastseen timestamp
  */
 export class SessionEnd {
