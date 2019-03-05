@@ -5,9 +5,16 @@ import {
   StateClear,
   StateOverwrite,
   StateReset,
+  StateResetAll,
 } from '../public_api';
 import { AppState, PreferencesState, SessionState, ToDoState } from './test-states';
-import { SessionEnd, ToDoAdd } from './test-symbols';
+import {
+  PreferencesToggleDark,
+  Preferences,
+  Session,
+  SessionEnd,
+  ToDoAdd,
+} from './test-symbols';
 
 interface TestModel {
   actions$: Actions;
@@ -38,19 +45,18 @@ describe('NgxsResetPlugin', () => {
   it('should clear states on StateClear but keep selected (multi)', fakeAsync(() => {
     const { store } = setupTest();
 
-    const lastseen = ensureLastSeen(store);
+    const session = ensureLastSeen(store);
 
     store.dispatch(new StateClear(PreferencesState, SessionState));
     tick();
 
     expect(store.snapshot()).toEqual({
-      app: { preferences: { darkmode: false, language: 'en' }, session: { lastseen } },
+      app: { preferences: { darkmode: false, language: 'en' }, session },
     });
   }));
 
   it('should log a warning on StateClear with wrong payload', fakeAsync(() => {
     const { store } = setupTest();
-    const state = store.snapshot();
 
     console.warn = jasmine.createSpy('warning');
 
@@ -95,6 +101,68 @@ describe('NgxsResetPlugin', () => {
     expect(store.snapshot()).toEqual(state);
   }));
 
+  it('should reset state to defaults on StateResetAll', fakeAsync(() => {
+    const { store } = setupTest();
+
+    const preferences = store.selectSnapshot(PreferencesState);
+    const session = store.selectSnapshot(SessionState);
+
+    ensureDarkMode(store);
+    ensureLastSeen(store);
+
+    store.dispatch(new StateResetAll());
+    tick();
+
+    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
+    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
+  it('should reset state to defaults on StateResetAll but keep given state', fakeAsync(() => {
+    const { store } = setupTest();
+
+    const session = ensureLastSeen(store);
+
+    store.dispatch(new StateResetAll(SessionState));
+    tick();
+
+    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
+  it('should reset state to defaults on StateResetAll but keep given states (multi)', fakeAsync(() => {
+    const { store } = setupTest();
+
+    const preferences = ensureDarkMode(store);
+    const session = ensureLastSeen(store);
+
+    store.dispatch(new StateResetAll(PreferencesState, SessionState));
+    tick();
+
+    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
+    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
+  it('should log a warning on StateResetAll with wrong payload', fakeAsync(() => {
+    const { store } = setupTest();
+    const preferences = store.selectSnapshot(PreferencesState);
+    const session = store.selectSnapshot(SessionState);
+
+    console.warn = jasmine.createSpy('warning');
+
+    ensureDarkMode(store);
+    ensureLastSeen(store);
+
+    store.dispatch(new StateResetAll(ToDoAdd));
+    tick();
+
+    expect(console.warn).toHaveBeenCalled();
+    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
+    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
   it('should overwrite state with given value on StateOverwrite', fakeAsync(() => {
     const { store } = setupTest();
 
@@ -130,15 +198,28 @@ describe('NgxsResetPlugin', () => {
   }));
 });
 
-function ensureLastSeen(store: Store): number {
+function ensureDarkMode(store: Store): Preferences.State {
+  const { darkmode } = store.selectSnapshot(PreferencesState);
+
+  store.dispatch(new PreferencesToggleDark());
+  tick();
+
+  const preferences = store.selectSnapshot(PreferencesState);
+  expect(preferences.darkmode).toBe(!darkmode);
+
+  return preferences;
+}
+
+function ensureLastSeen(store: Store): Session.State {
   const lastseen = new Date().valueOf();
 
   store.dispatch(new SessionEnd(lastseen));
   tick();
 
-  expect(store.selectSnapshot(SessionState)).toEqual({ lastseen });
+  const session = store.selectSnapshot(SessionState);
+  expect(session).toEqual({ lastseen });
 
-  return lastseen;
+  return session;
 }
 
 function setupTest(): TestModel {
