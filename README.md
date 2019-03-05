@@ -119,6 +119,8 @@ this.store.dispatch(
 
 ### How to Reset All States to Defaults
 
+**Important Notice:** Not tested on lazy loaded states. Use with caution.
+
 To reset all states to their defaults:
 
 ```TS
@@ -173,7 +175,7 @@ this.store.dispatch(
 
 - [x] Reset some NGXS state(s) to defaults on dispatch of StateReset action
 
-- [ ] Reset all NGXS states to defaults to on dispatch of StateResetAll action
+- [x] Reset all NGXS states to defaults to on dispatch of StateResetAll action
 
 - [x] Overwrite NGXS state(s) on dispatch of StateOverwrite action
 
