@@ -36,6 +36,22 @@ export class StateReset {
 }
 
 /**
+ * Action to reset all states expect given state(s) to defaults
+ */
+export class StateResetAll {
+  public readonly statesToKeep: MetaDataModel[];
+  static readonly type = '@@RESET_STATE_ALL';
+
+  // The duplication is necessary for TypeScript
+  constructor(...statesToKeep: StateClass[]);
+  constructor();
+  constructor(...statesToKeep: StateClass[]) {
+    const reducer = createMetaDataListReducer(isDevMode());
+    this.statesToKeep = (statesToKeep || []).reduce<MetaDataModel[]>(reducer, []);
+  }
+}
+
+/**
  * Action to overwrite state(s) with given value(s)
  */
 export class StateOverwrite {
