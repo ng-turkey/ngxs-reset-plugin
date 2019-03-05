@@ -1,5 +1,13 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { App, Preferences, Session, SessionEnd, ToDo, ToDoAdd } from './test-symbols';
+import {
+  App,
+  Preferences,
+  PreferencesToggleDark,
+  Session,
+  SessionEnd,
+  ToDo,
+  ToDoAdd,
+} from './test-symbols';
 
 /**
  * Test ToDoState
@@ -41,7 +49,14 @@ export class ToDoState {
     language: 'en',
   },
 })
-export class PreferencesState {}
+export class PreferencesState {
+  @Action(PreferencesToggleDark)
+  toggleDark({ getState, patchState }: StateContext<Preferences.State>) {
+    patchState({
+      darkmode: !getState().darkmode,
+    });
+  }
+}
 
 /**
  * Test SessionState

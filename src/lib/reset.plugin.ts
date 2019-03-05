@@ -1,10 +1,19 @@
 import { Injectable } from '@angular/core';
-import { getActionTypeFromInstance, NgxsPlugin } from '@ngxs/store';
-import { getValue, MetaDataModel, setValue } from './internals';
-import { StateClear, StateReset, StateOverwrite, getMetaData } from './symbols';
+import { getActionTypeFromInstance, getValue, NgxsPlugin, setValue } from '@ngxs/store';
+import { MetaDataModel } from './internals';
+import {
+  StateClear,
+  StateReset,
+  StateOverwrite,
+  getMetaData,
+  StateResetAll,
+} from './symbols';
+import { ResetService } from './reset.service';
 
 @Injectable()
 export class NgxsResetPlugin implements NgxsPlugin {
+  constructor(private readonly resetService: ResetService) {}
+
   private clearStates(state: any, statesToKeep: MetaDataModel[]): any {
     return statesToKeep
       .map(meta => getPath(meta))
@@ -59,18 +68,26 @@ export class NgxsResetPlugin implements NgxsPlugin {
     return state;
   }
 
+  private resetStatesAll(state: any, statesToKeep: MetaDataModel[]): any {
+    const values = statesToKeep.map(meta => getValue(state, getPath(meta)));
+
+    return this.overwriteStates(this.resetService.initialState, statesToKeep, values);
+  }
+
   handle(state: any, action: any, next: any) {
     const type: string = getActionTypeFromInstance(action) || '';
 
     switch (type) {
       case StateClear.type:
-        const { statesToKeep } = <StateClear>action;
-        state = this.clearStates(state, statesToKeep);
+        state = this.clearStates(state, (action as StateClear).statesToKeep);
         break;
 
       case StateReset.type:
-        const { statesToReset } = <StateReset>action;
-        state = this.resetStates(state, statesToReset);
+        state = this.resetStates(state, (action as StateReset).statesToReset);
+        break;
+
+      case StateResetAll.type:
+        state = this.resetStatesAll(state, (action as StateResetAll).statesToKeep);
         break;
 
       case StateOverwrite.type:
