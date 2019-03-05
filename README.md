@@ -117,6 +117,32 @@ this.store.dispatch(
 );
 ```
 
+### How to Reset All States to Defaults
+
+To reset all states to their defaults:
+
+```TS
+this.store.dispatch(
+  new StateResetAll()
+);
+```
+
+To reset all states to their defaults but keep one:
+
+```TS
+this.store.dispatch(
+  new StateResetAll(SomeState)
+);
+```
+
+To reset all states to their defaults but keep some:
+
+```TS
+this.store.dispatch(
+  new StateResetAll(SomeState, SomeOtherState)
+);
+```
+
 ### How to Overwrite States
 
 To replace the value of a single state with a new one: \*
@@ -145,7 +171,9 @@ this.store.dispatch(
 
 - [x] Clear NGXS state(s) on dispatch of StateClear action
 
-- [x] Reset NGXS state(s) to defaults on dispatch of StateReset action
+- [x] Reset some NGXS state(s) to defaults on dispatch of StateReset action
+
+- [ ] Reset all NGXS states to defaults to on dispatch of StateResetAll action
 
 - [x] Overwrite NGXS state(s) on dispatch of StateOverwrite action
 
