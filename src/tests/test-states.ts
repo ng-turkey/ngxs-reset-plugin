@@ -1,5 +1,6 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
+  Admin,
   App,
   Preferences,
   PreferencesToggleDark,
@@ -7,7 +8,31 @@ import {
   SessionEnd,
   ToDo,
   ToDoAdd,
+  AdminSetSuperadmin,
 } from './test-symbols';
+
+/**
+ * Test AdminState
+ */
+@State<Admin.State>({
+  name: 'admin',
+  defaults: {
+    role: 'admin',
+  },
+})
+export class AdminState {
+  @Selector()
+  static role({ role }: Admin.State): string {
+    return role;
+  }
+
+  @Action(AdminSetSuperadmin)
+  setSuperadmin({ getState, patchState }: StateContext<Admin.State>) {
+    patchState({
+      role: 'superadmin',
+    });
+  }
+}
 
 /**
  * Test ToDoState

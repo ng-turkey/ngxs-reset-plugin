@@ -28,6 +28,7 @@
     "@angular/language-service": "^8.1.2",
     "@angular/platform-browser": "^8.1.2",
     "@angular/platform-browser-dynamic": "^8.1.2",
+    "@angular/router": "^8.2.3",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
