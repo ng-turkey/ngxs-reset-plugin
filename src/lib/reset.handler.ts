@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, InitState, ofActionSuccessful, Store, UpdateState } from '@ngxs/store';
-import { take, switchMap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { ResetService } from './reset.service';
 
 @Injectable()
