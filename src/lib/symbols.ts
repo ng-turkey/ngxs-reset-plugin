@@ -19,7 +19,7 @@ export class StateClear {
   constructor();
   constructor(...statesToKeep: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
-    this.statesToKeep = (statesToKeep || []).reduce<MetaDataModel[]>(reducer, []);
+    this.statesToKeep = statesToKeep.reduce<MetaDataModel[]>(reducer, []);
   }
 }
 
@@ -31,7 +31,7 @@ export class StateReset {
   static readonly type = '@@RESET_STATE';
   constructor(...statesToReset: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
-    this.statesToReset = (statesToReset || []).reduce<MetaDataModel[]>(reducer, []);
+    this.statesToReset = statesToReset.reduce<MetaDataModel[]>(reducer, []);
   }
 }
 
@@ -47,7 +47,7 @@ export class StateResetAll {
   constructor();
   constructor(...statesToKeep: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
-    this.statesToKeep = (statesToKeep || []).reduce<MetaDataModel[]>(reducer, []);
+    this.statesToKeep = statesToKeep.reduce<MetaDataModel[]>(reducer, []);
   }
 }
 

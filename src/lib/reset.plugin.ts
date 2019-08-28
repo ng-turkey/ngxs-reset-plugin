@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { getActionTypeFromInstance, getValue, NgxsPlugin, setValue } from '@ngxs/store';
 import { MetaDataModel } from './internals';
+import { ResetService } from './reset.service';
 import {
-  StateClear,
-  StateReset,
-  StateOverwrite,
   getMetaData,
+  StateClear,
+  StateOverwrite,
+  StateReset,
   StateResetAll,
 } from './symbols';
-import { ResetService } from './reset.service';
 
 @Injectable()
 export class NgxsResetPlugin implements NgxsPlugin {
@@ -75,7 +75,7 @@ export class NgxsResetPlugin implements NgxsPlugin {
   }
 
   handle(state: any, action: any, next: any) {
-    const type: string = getActionTypeFromInstance(action) || '';
+    const type = getActionTypeFromInstance(action);
 
     switch (type) {
       case StateClear.type:
@@ -104,5 +104,5 @@ export class NgxsResetPlugin implements NgxsPlugin {
 }
 
 function getPath(meta: MetaDataModel): string {
-  return meta.path || '';
+  return meta.path;
 }
