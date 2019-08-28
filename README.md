@@ -3,8 +3,7 @@
 <p align="center">
   <a href="https://travis-ci.org/ng-turkey/ngxs-reset-plugin"><img src="https://travis-ci.org/ng-turkey/ngxs-reset-plugin.svg?branch=master"/></a>
   <a href="https://codeclimate.com/github/ng-turkey/ngxs-reset-plugin/maintainability"><img src="https://api.codeclimate.com/v1/badges/94f61495acc71b81033a/maintainability" /></a>
-  <a href="https://codeclimate.com/github/ng-turkey/ngxs-reset-plugin/test_coverage"><img src="https://api.codeclimate.com/v1/badges/94f61495acc71b81033a/test_coverage" /></a>
-  <a href="https://codecov.io/gh/Semyonic/ngxs-reset-plugin"><img src="https://codecov.io/gh/Semyonic/ngxs-reset-plugin/branch/master/graph/badge.svg" /></a>
+  <a href="https://codecov.io/gh/ng-turkey/ngxs-reset-plugin"><img src="https://codecov.io/gh/ng-turkey/ngxs-reset-plugin/branch/master/graph/badge.svg" /></a>
   <img src="https://img.shields.io/github/license/ng-turkey/ngxs-reset-plugin.svg" />
   <a href="https://twitter.com/ngTurkiye"><img src="https://img.shields.io/twitter/follow/ngTurkiye.svg?label=Follow"/></a>
 </p>
