@@ -1,6 +1,8 @@
+import { NgModuleFactoryLoader, NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Actions, NgxsModule, Store } from '@ngxs/store';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { Actions, NgxsModule, Store } from '@ngxs/store';
 import {
   NgxsResetPluginModule,
   StateClear,
@@ -8,29 +10,22 @@ import {
   StateReset,
   StateResetAll,
 } from '../public_api';
+import { AdminModule } from './test-lazy-module';
 import {
+  AdminState,
   AppState,
   PreferencesState,
   SessionState,
   ToDoState,
-  AdminState,
 } from './test-states';
 import {
-  PreferencesToggleDark,
+  AdminSetSuperadmin,
   Preferences,
+  PreferencesToggleDark,
   Session,
   SessionEnd,
   ToDoAdd,
-  AdminSetSuperadmin,
 } from './test-symbols';
-import {
-  NgModuleFactoryLoader,
-  SystemJsNgModuleLoader,
-  Type,
-  NgZone,
-} from '@angular/core';
-import { AdminModule } from './test-lazy-module';
-import { Router } from '@angular/router';
 
 interface TestModel {
   actions$: Actions;
@@ -273,7 +268,7 @@ function ensureLastSeen(store: Store): Session.State {
 }
 
 function ensureSuperadminRole(store: Store): Session.State {
-  const { role } = store.selectSnapshot(AdminState);
+  const role = store.selectSnapshot(AdminState.role);
 
   store.dispatch(new AdminSetSuperadmin());
   tick();
