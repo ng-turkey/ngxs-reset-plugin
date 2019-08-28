@@ -43,6 +43,15 @@ export namespace ToDo {
 }
 
 /**
+ * Test namespace for Admin
+ */
+export namespace Admin {
+  export interface State {
+    role: string;
+  }
+}
+
+/**
  * Test action to toggle darkmode
  */
 export class PreferencesToggleDark {
@@ -65,4 +74,11 @@ export class ToDoAdd {
   static readonly type = '[ToDo] Add';
 
   constructor(public payload: string) {}
+}
+
+/**
+ * Test action to set superadmin
+ */
+export class AdminSetSuperadmin {
+  static readonly type = '[Admin] Set superadmin';
 }

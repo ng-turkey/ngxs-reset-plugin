@@ -1,5 +1,6 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Actions, NgxsModule, Store } from '@ngxs/store';
+import { RouterTestingModule } from '@angular/router/testing';
 import {
   NgxsResetPluginModule,
   StateClear,
@@ -7,18 +8,34 @@ import {
   StateReset,
   StateResetAll,
 } from '../public_api';
-import { AppState, PreferencesState, SessionState, ToDoState } from './test-states';
+import {
+  AppState,
+  PreferencesState,
+  SessionState,
+  ToDoState,
+  AdminState,
+} from './test-states';
 import {
   PreferencesToggleDark,
   Preferences,
   Session,
   SessionEnd,
   ToDoAdd,
+  AdminSetSuperadmin,
 } from './test-symbols';
+import {
+  NgModuleFactoryLoader,
+  SystemJsNgModuleLoader,
+  Type,
+  NgZone,
+} from '@angular/core';
+import { AdminModule } from './test-lazy-module';
+import { Router } from '@angular/router';
 
 interface TestModel {
   actions$: Actions;
   store: Store;
+  navigateToAdmin: () => void;
 }
 
 describe('NgxsResetPlugin', () => {
@@ -196,6 +213,39 @@ describe('NgxsResetPlugin', () => {
     expect(console.warn).toHaveBeenCalled();
     expect(store.snapshot()).toEqual(state);
   }));
+
+  describe('with lazy module', () => {
+    let testModule: TestModel;
+
+    beforeEach(fakeAsync(() => {
+      testModule = setupTest();
+      testModule.navigateToAdmin();
+    }));
+
+    it('should reset state to defaults on StateResetAll', fakeAsync(() => {
+      const { store } = testModule;
+
+      const adminState = store.selectSnapshot(AdminState);
+      ensureSuperadminRole(store);
+
+      store.dispatch(new StateResetAll());
+      tick();
+
+      expect(store.selectSnapshot(AdminState)).toEqual(adminState);
+    }));
+
+    it('should reset state to defaults on StateResetAll but keep given state', fakeAsync(() => {
+      const { store } = testModule;
+
+      const adminState = ensureSuperadminRole(store);
+
+      store.dispatch(new StateResetAll(AdminState));
+      tick();
+
+      expect(store.selectSnapshot(AdminState)).toEqual(adminState);
+      expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+    }));
+  });
 });
 
 function ensureDarkMode(store: Store): Preferences.State {
@@ -222,16 +272,47 @@ function ensureLastSeen(store: Store): Session.State {
   return session;
 }
 
+function ensureSuperadminRole(store: Store): Session.State {
+  const { role } = store.selectSnapshot(AdminState);
+
+  store.dispatch(new AdminSetSuperadmin());
+  tick();
+
+  const adminState = store.selectSnapshot(AdminState);
+  expect(adminState.role).not.toBe(role);
+
+  return adminState;
+}
+
 function setupTest(): TestModel {
   TestBed.configureTestingModule({
     imports: [
       NgxsModule.forRoot([AppState, PreferencesState, SessionState, ToDoState]),
       NgxsResetPluginModule.forRoot(),
+      RouterTestingModule.withRoutes([
+        {
+          path: 'admin',
+          loadChildren: () => AdminModule,
+        },
+      ]),
     ],
   });
 
+  const router = TestBed.get(Router);
+  const ngZone = TestBed.get(NgZone);
   const actions$ = TestBed.get(Actions);
   const store = TestBed.get(Store);
+  const loader = TestBed.get(NgModuleFactoryLoader);
+  loader.stubbedModules = {
+    adminModule: AdminModule,
+  };
+
+  function navigateToAdmin() {
+    ngZone.run(() => {
+      router.navigateByUrl('/admin');
+    });
+    tick();
+  }
 
   store.dispatch(new ToDoAdd('Test'));
 
@@ -240,5 +321,5 @@ function setupTest(): TestModel {
     { description: 'Test', done: false },
   ]);
 
-  return { actions$, store };
+  return { actions$, store, navigateToAdmin };
 }
