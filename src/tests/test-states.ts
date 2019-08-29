@@ -27,7 +27,7 @@ export class AdminState {
   }
 
   @Action(AdminSetSuperadmin)
-  setSuperadmin({ getState, patchState }: StateContext<Admin.State>) {
+  setSuperadmin({ patchState }: StateContext<Admin.State>) {
     patchState({
       role: 'superadmin',
     });
