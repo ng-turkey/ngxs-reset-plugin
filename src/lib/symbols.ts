@@ -11,24 +11,26 @@ type MetaTupleReducer = (acc: MetaTuple, [state, value]: OverwriteTuple) => Meta
  * Action to clear all state except given state(s)
  */
 export class StateClear {
-  public readonly statesToKeep: MetaDataModel[];
   static readonly type = '@@CLEAR_STATE';
+  public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
+  /* tslint:disable:unified-signatures */
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
     this.statesToKeep = statesToKeep.reduce<MetaDataModel[]>(reducer, []);
   }
+  /* tslint:enable:unified-signatures */
 }
 
 /**
  * Action to reset given state(s) to defaults
  */
 export class StateReset {
-  public readonly statesToReset: MetaDataModel[];
   static readonly type = '@@RESET_STATE';
+  public readonly statesToReset: MetaDataModel[];
   constructor(...statesToReset: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
     this.statesToReset = statesToReset.reduce<MetaDataModel[]>(reducer, []);
@@ -39,25 +41,27 @@ export class StateReset {
  * Action to reset all states expect given state(s) to defaults
  */
 export class StateResetAll {
-  public readonly statesToKeep: MetaDataModel[];
   static readonly type = '@@RESET_STATE_ALL';
+  public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
+  /* tslint:disable:unified-signatures */
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
     this.statesToKeep = statesToKeep.reduce<MetaDataModel[]>(reducer, []);
   }
+  /* tslint:enable:unified-signatures */
 }
 
 /**
  * Action to overwrite state(s) with given value(s)
  */
 export class StateOverwrite {
+  static readonly type = '@@OVERWRITE_STATE';
   public readonly statesToOverwrite: MetaDataModel[];
   public readonly values: any[];
-  static readonly type = '@@OVERWRITE_STATE';
   constructor(...overwriteConfigs: OverwriteTuple[]) {
     const reducer = createMetaTupleReducer(isDevMode());
     const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [[], []]);

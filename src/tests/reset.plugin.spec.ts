@@ -297,6 +297,7 @@ function setupTest(): TestModel {
   const ngZone = TestBed.get(NgZone);
   const actions$ = TestBed.get(Actions);
   const store = TestBed.get(Store);
+  /* tslint:disable-next-line */
   const loader = TestBed.get(NgModuleFactoryLoader);
   loader.stubbedModules = {
     adminModule: AdminModule,
