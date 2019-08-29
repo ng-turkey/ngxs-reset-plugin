@@ -10,5 +10,6 @@ install:
 
 script:
   - yarn build
+  - yarn lint
   - yarn test --code-coverage
   - yarn codecov -t $CODECOV_TOKEN
