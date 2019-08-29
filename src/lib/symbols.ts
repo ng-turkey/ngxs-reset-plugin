@@ -11,10 +11,11 @@ type MetaTupleReducer = (acc: MetaTuple, [state, value]: OverwriteTuple) => Meta
  * Action to clear all state except given state(s)
  */
 export class StateClear {
-  public readonly statesToKeep: MetaDataModel[];
   static readonly type = '@@CLEAR_STATE';
+  public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
+  // tslint:disable-next-line:unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
@@ -27,8 +28,8 @@ export class StateClear {
  * Action to reset given state(s) to defaults
  */
 export class StateReset {
-  public readonly statesToReset: MetaDataModel[];
   static readonly type = '@@RESET_STATE';
+  public readonly statesToReset: MetaDataModel[];
   constructor(...statesToReset: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
     this.statesToReset = statesToReset.reduce<MetaDataModel[]>(reducer, []);
@@ -39,10 +40,11 @@ export class StateReset {
  * Action to reset all states expect given state(s) to defaults
  */
 export class StateResetAll {
-  public readonly statesToKeep: MetaDataModel[];
   static readonly type = '@@RESET_STATE_ALL';
+  public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
+  // tslint:disable-next-line:unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
@@ -55,9 +57,9 @@ export class StateResetAll {
  * Action to overwrite state(s) with given value(s)
  */
 export class StateOverwrite {
+  static readonly type = '@@OVERWRITE_STATE';
   public readonly statesToOverwrite: MetaDataModel[];
   public readonly values: any[];
-  static readonly type = '@@OVERWRITE_STATE';
   constructor(...overwriteConfigs: OverwriteTuple[]) {
     const reducer = createMetaTupleReducer(isDevMode());
     const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [[], []]);
@@ -81,7 +83,8 @@ export function getMetaData(state: StateClass, devMode: number): MetaDataModel |
 }
 
 function createMetaDataListReducer(devMode: boolean): MetaListReducer {
-  return function(acc: MetaDataModel[], state: StateClass): MetaDataModel[] {
+  return (acc: MetaDataModel[], state: StateClass): MetaDataModel[] => {
+    // tslint:disable-next-line:no-bitwise
     const meta = getMetaData(state, ~devMode);
 
     return meta ? acc.concat(meta) : acc;
@@ -89,7 +92,8 @@ function createMetaDataListReducer(devMode: boolean): MetaListReducer {
 }
 
 function createMetaTupleReducer(devMode: boolean): MetaTupleReducer {
-  return function(acc: MetaTuple, [state, value]: OverwriteTuple): MetaTuple {
+  return (acc: MetaTuple, [state, value]: OverwriteTuple): MetaTuple => {
+    // tslint:disable-next-line:no-bitwise
     const meta = getMetaData(state, ~devMode);
 
     return meta ? [acc[0].concat(meta), acc[1].concat(value)] : acc;

@@ -12,5 +12,5 @@ export interface StateClass<T = {}> {
 }
 
 export function noop() {
-  return function() {};
+  return () => {};
 }

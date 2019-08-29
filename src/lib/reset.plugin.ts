@@ -91,7 +91,7 @@ export class NgxsResetPlugin implements NgxsPlugin {
         break;
 
       case StateOverwrite.type:
-        const { statesToOverwrite, values } = <StateOverwrite>action;
+        const { statesToOverwrite, values } = action as StateOverwrite;
         state = this.overwriteStates(state, statesToOverwrite, values);
         break;
 

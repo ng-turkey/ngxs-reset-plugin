@@ -1,3 +1,5 @@
+// tslint:disable:no-namespace
+
 /**
  * Test namespace for App
  */
