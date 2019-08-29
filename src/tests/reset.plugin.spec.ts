@@ -1,4 +1,4 @@
-import { NgModuleFactoryLoader, NgZone } from '@angular/core';
+import { NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -297,10 +297,6 @@ function setupTest(): TestModel {
   const ngZone = TestBed.get(NgZone);
   const actions$ = TestBed.get(Actions);
   const store = TestBed.get(Store);
-  const loader = TestBed.get(NgModuleFactoryLoader);
-  loader.stubbedModules = {
-    adminModule: AdminModule,
-  };
 
   function navigateToAdmin() {
     ngZone.run(() => {
