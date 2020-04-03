@@ -1,9 +1,9 @@
-import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core";
-import { NGXS_PLUGINS } from "@ngxs/store";
-import { noop } from "./internals";
-import { ResetHandler } from "./reset.handler";
-import { NgxsResetPlugin } from "./reset.plugin";
-import { ResetService } from "./reset.service";
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
+import { NGXS_PLUGINS } from '@ngxs/store';
+import { noop } from './internals';
+import { ResetHandler } from './reset.handler';
+import { NgxsResetPlugin } from './reset.plugin';
+import { ResetService } from './reset.service';
 
 @NgModule()
 export class NgxsResetPluginModule {
@@ -17,14 +17,14 @@ export class NgxsResetPluginModule {
           provide: APP_INITIALIZER,
           useFactory: noop,
           deps: [ResetHandler],
-          multi: true
+          multi: true,
         },
         {
           provide: NGXS_PLUGINS,
           useClass: NgxsResetPlugin,
-          multi: true
-        }
-      ]
+          multi: true,
+        },
+      ],
     };
   }
 }
