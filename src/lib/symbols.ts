@@ -1,17 +1,23 @@
-import { isDevMode } from '@angular/core';
-import { getStoreMetadata } from '@ngxs/store';
-import { MetaDataModel, StateClass } from './internals';
+import { isDevMode } from "@angular/core";
+import { getStoreMetadata } from "@ngxs/store";
+import { MetaDataModel, StateClass } from "./internals";
 
 export type OverwriteTuple = [StateClass, any];
 type MetaTuple = [MetaDataModel[], any[]];
-type MetaListReducer = (acc: MetaDataModel[], state: StateClass) => MetaDataModel[];
-type MetaTupleReducer = (acc: MetaTuple, [state, value]: OverwriteTuple) => MetaTuple;
+type MetaListReducer = (
+  acc: MetaDataModel[],
+  state: StateClass
+) => MetaDataModel[];
+type MetaTupleReducer = (
+  acc: MetaTuple,
+  [state, value]: OverwriteTuple
+) => MetaTuple;
 
 /**
  * Action to clear all state except given state(s)
  */
 export class StateClear {
-  static readonly type = '@@CLEAR_STATE';
+  static readonly type = "@@CLEAR_STATE";
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
@@ -28,7 +34,7 @@ export class StateClear {
  * Action to reset given state(s) to defaults
  */
 export class StateReset {
-  static readonly type = '@@RESET_STATE';
+  static readonly type = "@@RESET_STATE";
   public readonly statesToReset: MetaDataModel[];
   constructor(...statesToReset: StateClass[]) {
     const reducer = createMetaDataListReducer(isDevMode());
@@ -40,7 +46,7 @@ export class StateReset {
  * Action to reset all states expect given state(s) to defaults
  */
 export class StateResetAll {
-  static readonly type = '@@RESET_STATE_ALL';
+  static readonly type = "@@RESET_STATE_ALL";
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
@@ -57,21 +63,27 @@ export class StateResetAll {
  * Action to overwrite state(s) with given value(s)
  */
 export class StateOverwrite {
-  static readonly type = '@@OVERWRITE_STATE';
+  static readonly type = "@@OVERWRITE_STATE";
   public readonly statesToOverwrite: MetaDataModel[];
   public readonly values: any[];
   constructor(...overwriteConfigs: OverwriteTuple[]) {
     const reducer = createMetaTupleReducer(isDevMode());
-    const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [[], []]);
+    const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [
+      [],
+      []
+    ]);
 
     this.statesToOverwrite = states;
     this.values = values;
   }
 }
 
-export function getMetaData(state: StateClass, devMode: number): MetaDataModel | null {
-  const meta = new Object(getStoreMetadata(state)) as MetaDataModel;
-  const isNgxsMeta = meta.name && 'defaults' in meta;
+export function getMetaData(
+  state: StateClass,
+  devMode: number
+): MetaDataModel | null {
+  const meta = new Object(getStoreMetadata(state as any)) as MetaDataModel;
+  const isNgxsMeta = meta.name && "defaults" in meta;
 
   // Reusability Hack: devMode is number on purpose
   if (!isNgxsMeta && devMode === -2) {
