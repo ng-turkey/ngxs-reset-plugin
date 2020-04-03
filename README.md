@@ -142,6 +142,8 @@ this.store.dispatch(
 );
 ```
 
+> **Important Note:** Since it does not know anything about the actual states, `StateResetAll` resets the states based on `InitState` action dispatched by NGXS at init. If you are persisting states with @ngxs/storage-plugin and want them to get reset as well, you need to reset those persisted states with `StateReset` instead. Otherwise, next time the app starts, the storage plugin will put them in the store before `InitState` and `StateResetAll` will reset to initial states from storage and not to the original defaults of those states.
+
 ### How to Overwrite States
 
 To replace the value of a single state with a new one: \*
