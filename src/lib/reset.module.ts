@@ -1,13 +1,13 @@
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { NGXS_PLUGINS } from '@ngxs/store';
+import { noop } from './internals';
+import { ResetHandler } from './reset.handler';
 import { NgxsResetPlugin } from './reset.plugin';
 import { ResetService } from './reset.service';
-import { ResetHandler } from './reset.handler';
-import { noop } from './internals';
 
 @NgModule()
 export class NgxsResetPluginModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<NgxsResetPluginModule> {
     return {
       ngModule: NgxsResetPluginModule,
       providers: [

@@ -4,8 +4,14 @@ import { MetaDataModel, StateClass } from './internals';
 
 export type OverwriteTuple = [StateClass, any];
 type MetaTuple = [MetaDataModel[], any[]];
-type MetaListReducer = (acc: MetaDataModel[], state: StateClass) => MetaDataModel[];
-type MetaTupleReducer = (acc: MetaTuple, [state, value]: OverwriteTuple) => MetaTuple;
+type MetaListReducer = (
+  acc: MetaDataModel[],
+  state: StateClass,
+) => MetaDataModel[];
+type MetaTupleReducer = (
+  acc: MetaTuple,
+  [state, value]: OverwriteTuple,
+) => MetaTuple;
 
 /**
  * Action to clear all state except given state(s)
@@ -62,15 +68,21 @@ export class StateOverwrite {
   public readonly values: any[];
   constructor(...overwriteConfigs: OverwriteTuple[]) {
     const reducer = createMetaTupleReducer(isDevMode());
-    const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [[], []]);
+    const [states, values] = overwriteConfigs.reduce<MetaTuple>(reducer, [
+      [],
+      [],
+    ]);
 
     this.statesToOverwrite = states;
     this.values = values;
   }
 }
 
-export function getMetaData(state: StateClass, devMode: number): MetaDataModel | null {
-  const meta = new Object(getStoreMetadata(state)) as MetaDataModel;
+export function getMetaData(
+  state: StateClass,
+  devMode: number,
+): MetaDataModel | null {
+  const meta = new Object(getStoreMetadata(state as any)) as MetaDataModel;
   const isNgxsMeta = meta.name && 'defaults' in meta;
 
   // Reusability Hack: devMode is number on purpose

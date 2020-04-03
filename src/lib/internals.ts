@@ -1,6 +1,9 @@
-import { MetaDataModel } from '@ngxs/store/src/internal/internals';
-
-export { MetaDataModel };
+export interface MetaDataModel {
+  name: string | null;
+  defaults: any;
+  path: string | null;
+  children?: StateClass[];
+}
 
 /**
  * a simplified implementation of NGXS StateClass interface
