@@ -1,6 +1,8 @@
+import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import {
   Admin,
+  AdminSetSuperadmin,
   App,
   Preferences,
   PreferencesToggleDark,
@@ -8,7 +10,6 @@ import {
   SessionEnd,
   ToDo,
   ToDoAdd,
-  AdminSetSuperadmin,
 } from './test-symbols';
 
 /**
@@ -20,6 +21,7 @@ import {
     role: 'admin',
   },
 })
+@Injectable()
 export class AdminState {
   @Selector()
   static role({ role }: Admin.State): string {
@@ -43,6 +45,7 @@ export class AdminState {
     list: [],
   },
 })
+@Injectable()
 export class ToDoState {
   @Selector()
   static list({ list }: ToDo.State): ToDo.Item[] {
@@ -50,7 +53,10 @@ export class ToDoState {
   }
 
   @Action(ToDoAdd)
-  addNewTodo({ getState, setState }: StateContext<ToDo.State>, { payload }: ToDoAdd) {
+  addNewTodo(
+    { getState, setState }: StateContext<ToDo.State>,
+    { payload }: ToDoAdd,
+  ) {
     const state = getState();
     setState({
       list: [
@@ -74,6 +80,7 @@ export class ToDoState {
     language: 'en',
   },
 })
+@Injectable()
 export class PreferencesState {
   @Action(PreferencesToggleDark)
   toggleDark({ getState, patchState }: StateContext<Preferences.State>) {
@@ -89,9 +96,13 @@ export class PreferencesState {
 @State<Session.State>({
   name: 'session',
 })
+@Injectable()
 export class SessionState {
   @Action(SessionEnd)
-  updateLastSeen({ patchState }: StateContext<Session.State>, { payload }: SessionEnd) {
+  updateLastSeen(
+    { patchState }: StateContext<Session.State>,
+    { payload }: SessionEnd,
+  ) {
     patchState({
       lastseen: payload,
     });
@@ -108,4 +119,5 @@ export class SessionState {
   },
   children: [PreferencesState, SessionState, ToDoState],
 })
+@Injectable()
 export class AppState {}
