@@ -189,7 +189,9 @@ describe('NgxsResetPlugin', () => {
 
     ensureLastSeen(store);
 
-    store.dispatch(new StateOverwrite([SessionState, null], [ToDoState, { list: [] }]));
+    store.dispatch(
+      new StateOverwrite([SessionState, null], [ToDoState, { list: [] }]),
+    );
     tick();
 
     expect(store.selectSnapshot(SessionState)).toBeNull();
@@ -293,10 +295,10 @@ function setupTest(): TestModel {
     ],
   });
 
-  const router = TestBed.get(Router);
-  const ngZone = TestBed.get(NgZone);
-  const actions$ = TestBed.get(Actions);
-  const store = TestBed.get(Store);
+  const router = TestBed.inject(Router);
+  const ngZone = TestBed.inject(NgZone);
+  const actions$ = TestBed.inject(Actions);
+  const store = TestBed.inject(Store);
 
   function navigateToAdmin() {
     ngZone.run(() => {
