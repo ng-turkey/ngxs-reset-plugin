@@ -10,6 +10,8 @@
 
 This plugin is designed to clear, reset, and overwrite [NGXS](https://www.npmjs.com/package/@ngxs/store) states on dispatch of predefined actions. If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons](#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
 
+**Notice:** This plugin requires **@angular/core** version **9.1.0** or **higher**.
+
 ## Reasons to Use This Plugin
 
 Calling the reset method of NGXS Store like `store.reset(myNewStateObject)` can:
