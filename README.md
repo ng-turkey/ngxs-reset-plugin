@@ -8,7 +8,9 @@
   <a href="https://twitter.com/ngTurkiye"><img src="https://img.shields.io/twitter/follow/ngTurkiye.svg?label=Follow"/></a>
 </p>
 
-This plugin is designed to clear, reset, and overwrite [NGXS](https://www.npmjs.com/package/@ngxs/store) states on dispatch of predefined actions. If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons](#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
+This plugin is designed to clear, reset, and overwrite [NGXS](https://www.npmjs.com/package/@ngxs/store) states on dispatch of predefined actions. Please check [this playground](https://stackblitz.com/edit/ngxs-pizza?file=src%2Fapp%2Forder%2Forder.handler.ts) for a working example.
+
+If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons](#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
 
 **Notice:** For Ivy or Angular **v9+** use **[v1.3.x](https://github.com/ng-turkey/ngxs-reset-plugin/releases/tag/v1.3.1)**
 
@@ -191,7 +193,5 @@ this.store.dispatch(
 - [x] Issue submission templates
 
 - [x] Contribution guidelines
-
-- [ ] GitHub Pages implementation
 
 - [x] CI integrations
