@@ -9,7 +9,6 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "git.autofetch": true,
-  "git.branchValidationRegex": "^((fix|feature)/([A-Za-z0-9]+(-[A-Za-z0-9]+)*/)?[A-Za-z0-9]+(-[A-Za-z0-9]+)+)$",
   "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "git.fetchOnPull": true,
