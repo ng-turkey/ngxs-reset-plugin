@@ -12,7 +12,7 @@ This plugin is designed to clear, reset, and overwrite [NGXS](https://www.npmjs.
 
 If you wonder why you would need a plugin like this, when there is already a reset method in NGXS, you may find the [reasons](#reasons-to-use-this-plugin) below. Otherwise, skip to the [installation](#installation) or [usage](#usage) section.
 
-**Notice:** For Ivy or Angular **v9+** use **[v1.3.x](https://github.com/ng-turkey/ngxs-reset-plugin/releases/tag/v1.3.1)**
+**Notice:** For Ivy or Angular **v9+** use **[v1.3+](https://github.com/ng-turkey/ngxs-reset-plugin/releases/tag/v1.4.0)**
 
 ## Reasons to Use This Plugin
 
