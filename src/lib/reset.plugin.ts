@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { getActionTypeFromInstance, getValue, NgxsPlugin, setValue } from '@ngxs/store';
+import {
+  getActionTypeFromInstance,
+  getValue,
+  NgxsPlugin,
+  setValue,
+} from '@ngxs/store';
 import { MetaDataModel } from './internals';
 import { ResetService } from './reset.service';
 import {
@@ -15,28 +20,28 @@ export class NgxsResetPlugin implements NgxsPlugin {
   constructor(private readonly resetService: ResetService) {}
 
   private clearStates(state: any, statesToKeep: MetaDataModel[]): any {
-    return statesToKeep
-      .map(meta => getPath(meta))
-      .map(path => ({
-        parts: path.split('.'),
-        value: getValue(state, path),
-      }))
-      .reduce(
-        (obj, { parts, value }) =>
-          parts.reduceRight(
-            (acc, part) =>
-              part in obj
-                ? {
-                    [part]: {
-                      ...obj[part],
-                      ...acc,
-                    },
-                  }
-                : { [part]: acc },
-            value,
-          ),
-        {} as any,
+    return statesToKeep.reduce((obj, meta) => {
+      const path = getPath(meta);
+      if (!path) {
+        return obj;
+      }
+
+      const parts = path.split('.');
+      const value = getValue(state, path);
+
+      return parts.reduceRight(
+        (acc, part) =>
+          part in obj
+            ? {
+                [part]: {
+                  ...obj[part],
+                  ...acc,
+                },
+              }
+            : { [part]: acc },
+        value,
       );
+    }, {});
   }
 
   private overwriteStates(
@@ -44,24 +49,35 @@ export class NgxsResetPlugin implements NgxsPlugin {
     statesToOverwrite: MetaDataModel[],
     values: any[],
   ): any {
-    statesToOverwrite.forEach(
-      (meta, index) => (state = setValue(state, getPath(meta), values[index])),
-    );
+    statesToOverwrite.forEach((meta, index) => {
+      const path = getPath(meta);
+      if (!path) {
+        return;
+      }
+
+      state = setValue(state, path, values[index]);
+    });
     return state;
   }
 
   private resetStates(state: any, statesToReset: MetaDataModel[]): any {
-    statesToReset.forEach(meta => {
+    statesToReset.forEach((meta) => {
+      const path = getPath(meta);
+      if (!path) {
+        return;
+      }
+
       state = setValue(
         state,
-        getPath(meta),
+        path,
         typeof meta.defaults === 'undefined' ? {} : meta.defaults,
       );
 
       if (meta.children) {
-        state = this.resetStates(state, meta.children.map(
-          getMetaData,
-        ) as MetaDataModel[]);
+        state = this.resetStates(
+          state,
+          meta.children.map(getMetaData) as MetaDataModel[],
+        );
       }
     });
 
@@ -69,9 +85,21 @@ export class NgxsResetPlugin implements NgxsPlugin {
   }
 
   private resetStatesAll(state: any, statesToKeep: MetaDataModel[]): any {
-    const values = statesToKeep.map(meta => getValue(state, getPath(meta)));
+    const [metas, values] = statesToKeep.reduce(
+      (acc: [MetaDataModel[], any[]], meta) => {
+        const path = getPath(meta);
+        if (!path) {
+          return acc;
+        }
 
-    return this.overwriteStates(this.resetService.initialState, statesToKeep, values);
+        acc[0].push(meta);
+        acc[1].push(getValue(state, path));
+        return acc;
+      },
+      [[], []],
+    );
+
+    return this.overwriteStates(this.resetService.initialState, metas, values);
   }
 
   handle(state: any, action: any, next: any) {
@@ -87,7 +115,10 @@ export class NgxsResetPlugin implements NgxsPlugin {
         break;
 
       case StateResetAll.type:
-        state = this.resetStatesAll(state, (action as StateResetAll).statesToKeep);
+        state = this.resetStatesAll(
+          state,
+          (action as StateResetAll).statesToKeep,
+        );
         break;
 
       case StateOverwrite.type:
