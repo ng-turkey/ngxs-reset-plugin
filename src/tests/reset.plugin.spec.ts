@@ -14,6 +14,7 @@ import { AdminModule } from './test-lazy-module';
 import {
   AdminState,
   AppState,
+  MissingState,
   PreferencesState,
   SessionState,
   ToDoState,
@@ -67,6 +68,21 @@ describe('NgxsResetPlugin', () => {
     });
   }));
 
+  it('should ignore missing states on StateClear but keep the rest', fakeAsync(() => {
+    const { store } = setupTest();
+
+    const session = ensureLastSeen(store);
+
+    store.dispatch(
+      new StateClear(PreferencesState, MissingState, SessionState),
+    );
+    tick();
+
+    expect(store.snapshot()).toEqual({
+      app: { preferences: { darkmode: false, language: 'en' }, session },
+    });
+  }));
+
   it('should log a warning on StateClear with wrong payload', fakeAsync(() => {
     const { store } = setupTest();
 
@@ -94,6 +110,18 @@ describe('NgxsResetPlugin', () => {
     ensureLastSeen(store);
 
     store.dispatch(new StateReset(SessionState, ToDoState));
+    tick();
+
+    expect(store.selectSnapshot(SessionState)).toEqual({});
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
+  it('should ignore missing states on StateReset and reset the rest', fakeAsync(() => {
+    const { store } = setupTest();
+
+    ensureLastSeen(store);
+
+    store.dispatch(new StateReset(SessionState, MissingState, ToDoState));
     tick();
 
     expect(store.selectSnapshot(SessionState)).toEqual({});
@@ -156,6 +184,22 @@ describe('NgxsResetPlugin', () => {
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
+  it('should ignore missing states on StateResetAll and keep the rest', fakeAsync(() => {
+    const { store } = setupTest();
+
+    const preferences = ensureDarkMode(store);
+    const session = ensureLastSeen(store);
+
+    store.dispatch(
+      new StateResetAll(PreferencesState, MissingState, SessionState),
+    );
+    tick();
+
+    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
+    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
   it('should log a warning on StateResetAll with wrong payload', fakeAsync(() => {
     const { store } = setupTest();
     const preferences = store.selectSnapshot(PreferencesState);
@@ -191,6 +235,24 @@ describe('NgxsResetPlugin', () => {
 
     store.dispatch(
       new StateOverwrite([SessionState, null], [ToDoState, { list: [] }]),
+    );
+    tick();
+
+    expect(store.selectSnapshot(SessionState)).toBeNull();
+    expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
+  }));
+
+  it('should ignore missing states on StateOverwrite and overwrite the rest', fakeAsync(() => {
+    const { store } = setupTest();
+
+    ensureLastSeen(store);
+
+    store.dispatch(
+      new StateOverwrite(
+        [SessionState, null],
+        [MissingState, Math.E],
+        [ToDoState, { list: [] }],
+      ),
     );
     tick();
 

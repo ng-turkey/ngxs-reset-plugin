@@ -110,6 +110,16 @@ export class SessionState {
 }
 
 /**
+ * Test MissingState
+ */
+@State<number>({
+  name: 'missing',
+  defaults: Math.PI,
+})
+@Injectable()
+export class MissingState {}
+
+/**
  * Test AppState
  */
 @State<App.State>({
