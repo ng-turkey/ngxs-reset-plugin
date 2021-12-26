@@ -1,6 +1,6 @@
 {
   "name": "ngxs-reset-plugin",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/core": ">=5.0.0 <13.0.0",
+    "@angular/core": ">=5.0.0 <14.0.0",
     "@ngxs/store": ">=0.0.0 <4.0.0",
     "rxjs": ">=6.0.0 || ^5.6.0-forward-compat.4",
     "tslib": "^2.0.0"
