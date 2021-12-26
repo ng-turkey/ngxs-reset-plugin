@@ -21,7 +21,7 @@ export class StateClear {
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
-  // tslint:disable-next-line:unified-signatures
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
@@ -50,7 +50,7 @@ export class StateResetAll {
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
-  // tslint:disable-next-line:unified-signatures
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
@@ -96,7 +96,7 @@ export function getMetaData(
 
 function createMetaDataListReducer(devMode: boolean): MetaListReducer {
   return (acc: MetaDataModel[], state: StateClass): MetaDataModel[] => {
-    // tslint:disable-next-line:no-bitwise
+    // eslint-disable-next-line no-bitwise
     const meta = getMetaData(state, ~devMode);
 
     return meta ? acc.concat(meta) : acc;
@@ -105,7 +105,7 @@ function createMetaDataListReducer(devMode: boolean): MetaListReducer {
 
 function createMetaTupleReducer(devMode: boolean): MetaTupleReducer {
   return (acc: MetaTuple, [state, value]: OverwriteTuple): MetaTuple => {
-    // tslint:disable-next-line:no-bitwise
+    // eslint-disable-next-line no-bitwise
     const meta = getMetaData(state, ~devMode);
 
     return meta ? [acc[0].concat(meta), acc[1].concat(value)] : acc;
