@@ -1,4 +1,4 @@
-// tslint:disable:no-namespace
+/* eslint-disable @typescript-eslint/no-namespace */
 
 /**
  * Test namespace for App
