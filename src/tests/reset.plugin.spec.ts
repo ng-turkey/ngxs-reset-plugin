@@ -1,16 +1,14 @@
 import { NgZone } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Actions, NgxsModule, Store } from '@ngxs/store';
+import { provideRouter, Router } from '@angular/router';
+import { Actions, provideStore, Store } from '@ngxs/store';
 import {
-  NgxsResetPluginModule,
   StateClear,
   StateOverwrite,
   StateReset,
   StateResetAll,
+  withNgxsResetPlugin,
 } from '../public_api';
-import { AdminModule } from './test-lazy-module';
 import {
   AdminState,
   AppState,
@@ -20,6 +18,7 @@ import {
   ToDoState,
 } from './test-states';
 import {
+  Admin,
   AdminSetSuperadmin,
   Preferences,
   PreferencesToggleDark,
@@ -27,6 +26,7 @@ import {
   SessionEnd,
   ToDoAdd,
 } from './test-symbols';
+import { AdminModule } from './test-lazy-module';
 
 interface TestModel {
   actions$: Actions;
@@ -112,7 +112,7 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateReset(SessionState, ToDoState));
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toEqual({});
+    expect(store.selectSnapshot(SessionState.getState)).toEqual({});
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -124,7 +124,7 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateReset(SessionState, MissingState, ToDoState));
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toEqual({});
+    expect(store.selectSnapshot(SessionState.getState)).toEqual({});
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -144,8 +144,8 @@ describe('NgxsResetPlugin', () => {
   it('should reset state to defaults on StateResetAll', fakeAsync(() => {
     const { store } = setupTest();
 
-    const preferences = store.selectSnapshot(PreferencesState);
-    const session = store.selectSnapshot(SessionState);
+    const preferences = store.selectSnapshot(PreferencesState.getState);
+    const session = store.selectSnapshot(SessionState.getState);
 
     ensureDarkMode(store);
     ensureLastSeen(store);
@@ -153,8 +153,10 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateResetAll());
     tick();
 
-    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
-    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(PreferencesState.getState)).toEqual(
+      preferences,
+    );
+    expect(store.selectSnapshot(SessionState.getState)).toEqual(session);
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -166,7 +168,7 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateResetAll(SessionState));
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(SessionState.getState)).toEqual(session);
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -179,8 +181,10 @@ describe('NgxsResetPlugin', () => {
     store.dispatch(new StateResetAll(PreferencesState, SessionState));
     tick();
 
-    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
-    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(PreferencesState.getState)).toEqual(
+      preferences,
+    );
+    expect(store.selectSnapshot(SessionState.getState)).toEqual(session);
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -195,15 +199,17 @@ describe('NgxsResetPlugin', () => {
     );
     tick();
 
-    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
-    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(PreferencesState.getState)).toEqual(
+      preferences,
+    );
+    expect(store.selectSnapshot(SessionState.getState)).toEqual(session);
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
   it('should log a warning on StateResetAll with wrong payload', fakeAsync(() => {
     const { store } = setupTest();
-    const preferences = store.selectSnapshot(PreferencesState);
-    const session = store.selectSnapshot(SessionState);
+    const preferences = store.selectSnapshot(PreferencesState.getState);
+    const session = store.selectSnapshot(SessionState.getState);
 
     console.warn = jasmine.createSpy('warning');
 
@@ -214,8 +220,10 @@ describe('NgxsResetPlugin', () => {
     tick();
 
     expect(console.warn).toHaveBeenCalled();
-    expect(store.selectSnapshot(PreferencesState)).toEqual(preferences);
-    expect(store.selectSnapshot(SessionState)).toEqual(session);
+    expect(store.selectSnapshot(PreferencesState.getState)).toEqual(
+      preferences,
+    );
+    expect(store.selectSnapshot(SessionState.getState)).toEqual(session);
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -238,7 +246,7 @@ describe('NgxsResetPlugin', () => {
     );
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toBeNull();
+    expect(store.selectSnapshot(SessionState.getState)).toBeNull();
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -256,7 +264,7 @@ describe('NgxsResetPlugin', () => {
     );
     tick();
 
-    expect(store.selectSnapshot(SessionState)).toBeNull();
+    expect(store.selectSnapshot(SessionState.getState)).toBeNull();
     expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
   }));
 
@@ -284,13 +292,13 @@ describe('NgxsResetPlugin', () => {
     it('should reset state to defaults on StateResetAll', fakeAsync(() => {
       const { store } = testModule;
 
-      const adminState = store.selectSnapshot(AdminState);
+      const adminState = store.selectSnapshot(AdminState.getState);
       ensureSuperadminRole(store);
 
       store.dispatch(new StateResetAll());
       tick();
 
-      expect(store.selectSnapshot(AdminState)).toEqual(adminState);
+      expect(store.selectSnapshot(AdminState.getState)).toEqual(adminState);
     }));
 
     it('should reset state to defaults on StateResetAll but keep given state', fakeAsync(() => {
@@ -301,19 +309,19 @@ describe('NgxsResetPlugin', () => {
       store.dispatch(new StateResetAll(AdminState));
       tick();
 
-      expect(store.selectSnapshot(AdminState)).toEqual(adminState);
+      expect(store.selectSnapshot(AdminState.getState)).toEqual(adminState);
       expect(store.selectSnapshot(ToDoState.list)).toEqual([]);
     }));
   });
 });
 
 function ensureDarkMode(store: Store): Preferences.State {
-  const { darkmode } = store.selectSnapshot(PreferencesState);
+  const { darkmode } = store.selectSnapshot(PreferencesState.getState);
 
   store.dispatch(new PreferencesToggleDark());
   tick();
 
-  const preferences = store.selectSnapshot(PreferencesState);
+  const preferences = store.selectSnapshot(PreferencesState.getState);
   expect(preferences.darkmode).toBe(!darkmode);
 
   return preferences;
@@ -325,19 +333,19 @@ function ensureLastSeen(store: Store): Session.State {
   store.dispatch(new SessionEnd(lastseen));
   tick();
 
-  const session = store.selectSnapshot(SessionState);
+  const session = store.selectSnapshot(SessionState.getState);
   expect(session).toEqual({ lastseen });
 
   return session;
 }
 
-function ensureSuperadminRole(store: Store): Session.State {
+function ensureSuperadminRole(store: Store): Admin.State {
   const role = store.selectSnapshot(AdminState.role);
 
   store.dispatch(new AdminSetSuperadmin());
   tick();
 
-  const adminState = store.selectSnapshot(AdminState);
+  const adminState = store.selectSnapshot(AdminState.getState);
   expect(adminState.role).not.toBe(role);
 
   return adminState;
@@ -345,10 +353,10 @@ function ensureSuperadminRole(store: Store): Session.State {
 
 function setupTest(): TestModel {
   TestBed.configureTestingModule({
-    imports: [
-      NgxsModule.forRoot([AppState, PreferencesState, SessionState, ToDoState]),
-      NgxsResetPluginModule.forRoot(),
-      RouterTestingModule.withRoutes([
+    providers: [
+      provideStore([AppState, PreferencesState, SessionState, ToDoState]),
+      withNgxsResetPlugin(),
+      provideRouter([
         {
           path: 'admin',
           loadChildren: () => AdminModule,

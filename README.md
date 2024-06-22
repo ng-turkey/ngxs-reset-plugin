@@ -14,6 +14,7 @@ Please use the table below to make sure you are using the correct version of thi
 
 | Angular<br>version | ngxs-reset-plugin<br>version |
 | :----------------: | :--------------------------: |
+|        18+         |              4               |
 |        14+         |              3               |
 |         13         |              2               |
 |         12         |              2               |

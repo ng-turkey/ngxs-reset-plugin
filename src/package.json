@@ -1,6 +1,6 @@
 {
   "name": "ngxs-reset-plugin",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ng-turkey/ngxs-reset-plugin.git"
@@ -24,8 +24,8 @@
     "state defaults"
   ],
   "peerDependencies": {
-    "@angular/core": ">=14.0.0",
-    "@ngxs/store": ">=0.0.0",
-    "rxjs": ">=6.0.0"
+    "@angular/core": ">=18.0.0",
+    "@ngxs/store": ">=18.0.0",
+    "rxjs": ">=7.0.0"
   }
 }
