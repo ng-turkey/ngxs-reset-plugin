@@ -1,5 +1,5 @@
 import { isDevMode } from '@angular/core';
-import { getStoreMetadata } from '@ngxs/store';
+import { ɵgetStoreMetadata as getStoreMetadata } from '@ngxs/store/internals';
 import { MetaDataModel, StateClass } from './internals';
 
 export type OverwriteTuple = [StateClass, any];
@@ -21,7 +21,6 @@ export class StateClear {
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
-  // eslint-disable-next-line @typescript-eslint/unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {
@@ -50,7 +49,6 @@ export class StateResetAll {
   public readonly statesToKeep: MetaDataModel[];
 
   // The duplication is necessary for TypeScript
-  // eslint-disable-next-line @typescript-eslint/unified-signatures
   constructor(...statesToKeep: StateClass[]);
   constructor();
   constructor(...statesToKeep: StateClass[]) {

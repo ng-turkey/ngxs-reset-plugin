@@ -14,6 +14,7 @@ Please use the table below to make sure you are using the correct version of thi
 
 | Angular<br>version | ngxs-reset-plugin<br>version |
 | :----------------: | :--------------------------: |
+|        18+         |              4               |
 |        14+         |              3               |
 |         13         |              2               |
 |         12         |              2               |
@@ -66,19 +67,17 @@ npm install ngxs-reset-plugin
 
 ### Setup Before Initial Use
 
-Import `NgxsResetPluginModule` into your root module like:
+Import `withNgxsResetPlugin` into your app config like:
 
 ```TS
-import { NgxsModule } from '@ngxs/store';
-import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { withNgxsResetPlugin } from 'ngxs-reset-plugin';
 
-@NgModule({
-  imports: [
-    NgxsModule.forRoot([ /* Your states here */ ]),
-    NgxsResetPluginModule.forRoot()
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providerStore([]),
+    withNgxsResetPlugin()
   ]
-})
-export class AppModule {}
+}
 ```
 
 ### How to Clear States

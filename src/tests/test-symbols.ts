@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-
 /**
  * Test namespace for App
  */
@@ -26,7 +24,7 @@ export namespace Preferences {
  */
 export namespace Session {
   export interface State {
-    lastseen: number;
+    lastseen?: number;
   }
 }
 

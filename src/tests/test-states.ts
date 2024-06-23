@@ -24,6 +24,10 @@ import {
 @Injectable()
 export class AdminState {
   @Selector()
+  static getState(state: Admin.State) {
+    return state;
+  }
+  @Selector()
   static role({ role }: Admin.State): string {
     return role;
   }
@@ -47,6 +51,10 @@ export class AdminState {
 })
 @Injectable()
 export class ToDoState {
+  @Selector()
+  static getState(state: ToDo.State) {
+    return state;
+  }
   @Selector()
   static list({ list }: ToDo.State): ToDo.Item[] {
     return list;
@@ -82,6 +90,10 @@ export class ToDoState {
 })
 @Injectable()
 export class PreferencesState {
+  @Selector()
+  static getState(state: Preferences.State) {
+    return state;
+  }
   @Action(PreferencesToggleDark)
   toggleDark({ getState, patchState }: StateContext<Preferences.State>) {
     patchState({
@@ -95,9 +107,14 @@ export class PreferencesState {
  */
 @State<Session.State>({
   name: 'session',
+  defaults: {},
 })
 @Injectable()
 export class SessionState {
+  @Selector()
+  static getState(state: Session.State) {
+    return state;
+  }
   @Action(SessionEnd)
   updateLastSeen(
     { patchState }: StateContext<Session.State>,
