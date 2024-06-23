@@ -67,19 +67,17 @@ npm install ngxs-reset-plugin
 
 ### Setup Before Initial Use
 
-Import `NgxsResetPluginModule` into your root module like:
+Import `withNgxsResetPlugin` into your app config like:
 
 ```TS
-import { NgxsModule } from '@ngxs/store';
-import { NgxsResetPluginModule } from 'ngxs-reset-plugin';
+import { withNgxsResetPlugin } from 'ngxs-reset-plugin';
 
-@NgModule({
-  imports: [
-    NgxsModule.forRoot([ /* Your states here */ ]),
-    NgxsResetPluginModule.forRoot()
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providerStore([]),
+    withNgxsResetPlugin()
   ]
-})
-export class AppModule {}
+}
 ```
 
 ### How to Clear States
